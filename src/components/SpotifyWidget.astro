@@ -6,34 +6,78 @@
 </div>
 
 <script>
-	async function updateSpotify() {
-		try {
-			const response = await fetch('/api/spotify');
-			const data = await response.json();
-			const content = document.getElementById('spotify-content');
-			
-			if (data.isPlaying && content) {
-				content.innerHTML = `
-					<img src="${data.albumImageUrl}" alt="Album" class="w-12 h-12 object-cover" />
-					<div>
-						<a href="${data.songUrl}" target="_blank" class="text-white hover:text-blue-400">
-							<p class="font-semibold">${data.title}</p>
-							<p class="text-gray-400 text-sm">${data.artist}</p>
-						</a>
-					</div>
-				`;
-			} else if (content) {
-				content.innerHTML = '<p class="text-gray-500">not playing anything</p>';
-			}
-		} catch (error) {
-			console.error('Error fetching Spotify data:', error);
-			const content = document.getElementById('spotify-content');
-			if (content) {
-				content.innerHTML = '<p class="text-gray-500">offline</p>';
-			}
+	const DISCORD_USER_ID = '629344560203431977';
+	let ws: WebSocket | null = null;
+	let heartbeatInterval: number | null = null;
+
+	function updateDisplay(data: any) {
+		const content = document.getElementById('spotify-content');
+		if (!content) return;
+
+		const spotify = data.spotify;
+		const isListening = data.listening_to_spotify;
+
+		if (spotify && isListening) {
+			content.innerHTML = `
+				<img src="${spotify.album_art_url}" alt="Album" class="w-12 h-12 object-cover" />
+				<div>
+					<a href="https://open.spotify.com/track/${spotify.track_id}" target="_blank" class="text-white hover:text-blue-400">
+						<p class="font-semibold">${spotify.song}</p>
+						<p class="text-gray-400 text-sm">${spotify.artist}</p>
+					</a>
+				</div>
+			`;
+		} else {
+			content.innerHTML = '<p class="text-gray-500">not playing anything</p>';
 		}
 	}
 
-	updateSpotify();
-	setInterval(updateSpotify, 30000);
+	function connectWebSocket() {
+		ws = new WebSocket('wss://api.lanyard.rest/socket');
+
+		ws.onopen = () => {
+			console.log('Lanyard WebSocket connected');
+		};
+
+		ws.onmessage = (event) => {
+			const message = JSON.parse(event.data);
+
+			switch (message.op) {
+				case 1:
+					const heartbeatInterval = message.d.heartbeat_interval;
+					setInterval(() => {
+						if (ws?.readyState === WebSocket.OPEN) {
+							ws.send(JSON.stringify({ op: 3 }));
+						}
+					}, heartbeatInterval);
+
+					ws?.send(JSON.stringify({
+						op: 2,
+						d: {
+							subscribe_to_id: DISCORD_USER_ID
+						}
+					}));
+					break;
+
+				case 0:
+					if (message.t === 'INIT_STATE') {
+						updateDisplay(message.d);
+					} else if (message.t === 'PRESENCE_UPDATE') {
+						updateDisplay(message.d);
+					}
+					break;
+			}
+		};
+
+		ws.onerror = (error) => {
+			console.error('Lanyard WebSocket error:', error);
+		};
+
+		ws.onclose = () => {
+			console.log('Lanyard WebSocket closed, reconnecting in 5s...');
+			setTimeout(connectWebSocket, 5000);
+		};
+	}
+
+	connectWebSocket();
 </script>

@@ -10,8 +10,17 @@ import '../styles/global.css';
 		<meta name="generator" content={Astro.generator} />
 		<title>Snow</title>
 	</head>
-	<body class="bg-black min-h-screen overflow-hidden">
+	<body class="bg-black min-h-screen overflow-hidden flex items-center justify-center">
 		<canvas id="snow"></canvas>
+		<div class="relative z-10 border-2 border-gray-500 w-[70vw] h-[60vh]">
+			<div class="absolute top-8 left-8">
+				<img 
+					src="/assets/✧.jpg" 
+					alt="Profile" 
+					class="w-32 h-32 object-cover border-4 border-white/30"
+				/>
+			</div>
+		</div>
 	</body>
 </html>
 

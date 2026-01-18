@@ -60,5 +60,11 @@
 		updateSections();
 	});
 
-	updateSections();
+	document.addEventListener('DOMContentLoaded', () => {
+		updateSections();
+	});
+
+	if (document.readyState === 'complete' || document.readyState === 'interactive') {
+		updateSections();
+	}
 </script>

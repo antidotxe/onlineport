@@ -1,10 +1,51 @@
 <div class="absolute top-48 right-8 text-white max-w-xs" style="font-family: Consolas, monospace; font-size: 16px; line-height: 24px;">
 	<p class="text-gray-400 mb-2">notable projects:</p>
-	<p>• Silk</p>
-	<p>• Custom Snipping Tool</p>
-	<p>• Controller emulator</p>
+	<p class="cursor-pointer hover:text-blue-400 transition-colors project-link" data-section="1">• Silk</p>
+	<p class="cursor-pointer hover:text-blue-400 transition-colors project-link" data-section="2">• Controller Emulator</p>
+	<p class="cursor-pointer hover:text-blue-400 transition-colors project-link" data-section="3">• Custom Snipping Tool</p>
+	<p class="cursor-pointer hover:text-blue-400 transition-colors project-link" data-section="4">• Cleaner Tool</p>
+	<p class="cursor-pointer hover:text-blue-400 transition-colors project-link" data-section="5">• Roblox External</p>
 	<p class="text-gray-400 mt-4 mb-2">specialities:</p>
 	<p>• Reverse engineering</p>
 	<p>• Rendering</p>
 	<p>• Backend development</p>
 </div>
+
+<script>
+	const projectLinks = document.querySelectorAll('.project-link');
+	
+	projectLinks.forEach(link => {
+		link.addEventListener('click', () => {
+			const sectionIndex = parseInt(link.getAttribute('data-section') || '0');
+			const sections = document.querySelectorAll('.section');
+			
+			sections.forEach((section, index) => {
+				const el = section as HTMLElement;
+				if (index === sectionIndex) {
+					el.style.transform = 'translateX(-50%) translateY(-50%)';
+					el.style.opacity = '1';
+					el.style.pointerEvents = 'auto';
+				} else if (index < sectionIndex) {
+					el.style.transform = 'translateX(-150%) translateY(-50%)';
+					el.style.opacity = '0';
+					el.style.pointerEvents = 'none';
+				} else {
+					el.style.transform = 'translateX(50%) translateY(-50%)';
+					el.style.opacity = '0';
+					el.style.pointerEvents = 'none';
+				}
+			});
+
+			// Update navigation arrows
+			const prevBtn = document.getElementById('prev-section');
+			const nextBtn = document.getElementById('next-section');
+			if (prevBtn && nextBtn) {
+				prevBtn.style.display = sectionIndex === 0 ? 'none' : 'block';
+				nextBtn.style.display = sectionIndex === sections.length - 1 ? 'none' : 'block';
+			}
+
+			// Dispatch custom event to update current section
+			window.dispatchEvent(new CustomEvent('sectionChange', { detail: { sectionIndex } }));
+		});
+	});
+</script>

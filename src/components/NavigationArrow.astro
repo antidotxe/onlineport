@@ -55,5 +55,12 @@
 		}
 	});
 
+	// Listen for section changes from project links
+	window.addEventListener('sectionChange', (e: Event) => {
+		const customEvent = e as CustomEvent;
+		currentSection = customEvent.detail.sectionIndex;
+		updateSections();
+	});
+
 	updateSections();
 </script>

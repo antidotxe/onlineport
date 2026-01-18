@@ -102,7 +102,7 @@ import NavigationArrow from '../components/NavigationArrow.astro';
 	<script>
 		const silkImage = document.getElementById('silk-image');
 		const modal = document.getElementById('image-modal');
-		const modalImage = document.getElementById('modal-image');
+		const modalImage = document.getElementById('modal-image') as HTMLImageElement;
 		const closeModal = document.getElementById('close-modal');
 		const controllerImages = document.querySelectorAll('.controller-img');
 		const snipImages = document.querySelectorAll('.snip-img');
@@ -121,61 +121,26 @@ import NavigationArrow from '../components/NavigationArrow.astro';
 			}
 		});
 
-		controllerImages.forEach(img => {
-			img.addEventListener('click', () => {
-				if (modal && modalImage) {
-					modalImage.src = (img as HTMLImageElement).src;
-					modal.classList.remove('hidden');
-					modal.classList.add('flex');
-					setTimeout(() => {
-						modal.style.opacity = '1';
-						modalImage.style.transform = 'scale(1)';
-					}, 10);
-				}
+		const handleImageClick = (images: NodeListOf<Element>) => {
+			images.forEach(img => {
+				img.addEventListener('click', () => {
+					if (modal && modalImage) {
+						modalImage.src = (img as HTMLImageElement).src;
+						modal.classList.remove('hidden');
+						modal.classList.add('flex');
+						setTimeout(() => {
+							modal.style.opacity = '1';
+							modalImage.style.transform = 'scale(1)';
+						}, 10);
+					}
+				});
 			});
-		});
+		};
 
-		snipImages.forEach(img => {
-			img.addEventListener('click', () => {
-				if (modal && modalImage) {
-					modalImage.src = (img as HTMLImageElement).src;
-					modal.classList.remove('hidden');
-					modal.classList.add('flex');
-					setTimeout(() => {
-						modal.style.opacity = '1';
-						modalImage.style.transform = 'scale(1)';
-					}, 10);
-				}
-			});
-		});
-
-		cleanerImages.forEach(img => {
-			img.addEventListener('click', () => {
-				if (modal && modalImage) {
-					modalImage.src = (img as HTMLImageElement).src;
-					modal.classList.remove('hidden');
-					modal.classList.add('flex');
-					setTimeout(() => {
-						modal.style.opacity = '1';
-						modalImage.style.transform = 'scale(1)';
-					}, 10);
-				}
-			});
-		});
-
-		robloxImages.forEach(img => {
-			img.addEventListener('click', () => {
-				if (modal && modalImage) {
-					modalImage.src = (img as HTMLImageElement).src;
-					modal.classList.remove('hidden');
-					modal.classList.add('flex');
-					setTimeout(() => {
-						modal.style.opacity = '1';
-						modalImage.style.transform = 'scale(1)';
-					}, 10);
-				}
-			});
-		});
+		handleImageClick(controllerImages);
+		handleImageClick(snipImages);
+		handleImageClick(cleanerImages);
+		handleImageClick(robloxImages);
 
 		const closeModalFunc = () => {
 			if (modal && modalImage) {

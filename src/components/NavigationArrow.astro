@@ -1,0 +1,59 @@
+<button id="prev-section" class="absolute left-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors z-20 hidden">
+	<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<polyline points="15 18 9 12 15 6"></polyline>
+	</svg>
+</button>
+
+<button id="next-section" class="absolute right-8 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors z-20">
+	<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<polyline points="9 18 15 12 9 6"></polyline>
+	</svg>
+</button>
+
+<script>
+	const nextBtn = document.getElementById('next-section');
+	const prevBtn = document.getElementById('prev-section');
+	const sections = document.querySelectorAll('.section');
+	let currentSection = 0;
+
+	function updateSections() {
+		sections.forEach((section, index) => {
+			const el = section as HTMLElement;
+			if (index === currentSection) {
+				el.style.transform = 'translateX(-50%) translateY(-50%)';
+				el.style.opacity = '1';
+				el.style.pointerEvents = 'auto';
+			} else if (index < currentSection) {
+				el.style.transform = 'translateX(-150%) translateY(-50%)';
+				el.style.opacity = '0';
+				el.style.pointerEvents = 'none';
+			} else {
+				el.style.transform = 'translateX(50%) translateY(-50%)';
+				el.style.opacity = '0';
+				el.style.pointerEvents = 'none';
+			}
+		});
+
+		// Show/hide navigation arrows
+		if (prevBtn && nextBtn) {
+			prevBtn.style.display = currentSection === 0 ? 'none' : 'block';
+			nextBtn.style.display = currentSection === sections.length - 1 ? 'none' : 'block';
+		}
+	}
+
+	nextBtn?.addEventListener('click', () => {
+		if (currentSection < sections.length - 1) {
+			currentSection++;
+			updateSections();
+		}
+	});
+
+	prevBtn?.addEventListener('click', () => {
+		if (currentSection > 0) {
+			currentSection--;
+			updateSections();
+		}
+	});
+
+	updateSections();
+</script>

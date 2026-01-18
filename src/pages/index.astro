@@ -6,15 +6,205 @@ import AboutSection from '../components/AboutSection.astro';
 import ProjectsSection from '../components/ProjectsSection.astro';
 import SocialsSection from '../components/SocialsSection.astro';
 import SpotifyWidget from '../components/SpotifyWidget.astro';
+import NavigationArrow from '../components/NavigationArrow.astro';
 ---
 
 <Layout title="anti - portfolio">
 	<SnowCanvas />
-	<div class="relative z-10 border-2 border-gray-700/50 w-[70vw] h-[60vh]">
+	
+	<div class="section relative z-10 border-2 border-gray-700/50 w-[70vw] h-[60vh] transition-all duration-700 ease-in-out">
 		<ProfileHeader />
 		<AboutSection />
 		<ProjectsSection />
 		<SocialsSection />
 		<SpotifyWidget />
 	</div>
+
+	<div class="section relative z-10 border-2 border-gray-700/50 w-[70vw] h-[60vh] transition-all duration-700 ease-in-out">
+		<div class="flex items-center justify-center h-full gap-8 px-12">
+			<div class="flex-shrink-0">
+				<img id="silk-image" src="/assets/silk.png" alt="Silk" class="w-64 h-64 object-contain cursor-pointer hover:opacity-80 transition-opacity" />
+			</div>
+			<div class="text-white max-w-md" style="font-family: Consolas, monospace; font-size: 16px; line-height: 24px;">
+				<h2 class="text-3xl font-bold mb-4">Silk</h2>
+				<p>silk is an open source minecraft hacked client with a pretty active userbase and discord server that is developed by antidotxe and graphics.x</p>
+				<p class="mt-4">i have tooken over 300+ hours into this project and i am still actively mentaining this project as it grows</p>
+				<div class="mt-6">
+					<p class="text-gray-400 mb-2">details:</p>
+					<p>github: <a href="https://github.com/antidotxe/silkxd" target="_blank" class="text-blue-400 hover:text-blue-300 underline">https://github.com/antidotxe/silkxd</a></p>
+					<p>discord: <a href="https://discord.gg/ykAjDbJGTY" target="_blank" class="text-blue-400 hover:text-blue-300 underline">https://discord.gg/ykAjDbJGTY</a></p>
+					<p class="mt-2">dev team: <a href="https://github.com/knezoWTF" target="_blank" class="text-blue-400 hover:text-blue-300 underline">knezoWTF</a>, <a href="https://github.com/antidotxe" target="_blank" class="text-blue-400 hover:text-blue-300 underline">antidotxe</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="image-modal" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center opacity-0 transition-opacity duration-300">
+		<button id="close-modal" class="absolute top-8 right-8 text-white/70 hover:text-white text-4xl">&times;</button>
+		<img id="modal-image" src="/assets/silk.png" alt="Silk" class="max-w-[90vw] max-h-[90vh] object-contain transform scale-75 transition-transform duration-300" />
+	</div>
+
+	<div class="section relative z-10 border-2 border-gray-700/50 w-[70vw] h-[60vh] transition-all duration-700 ease-in-out overflow-hidden">
+		<div class="flex flex-col h-full p-8">
+			<h2 class="text-white text-3xl font-bold mb-6" style="font-family: Consolas, monospace;">Controller Emulator</h2>
+			<div class="flex gap-4 mb-6 flex-1">
+				<img src="/assets/ss22.png" alt="Screenshot 1" class="h-full w-1/3 object-cover cursor-pointer hover:opacity-80 transition-opacity controller-img" />
+				<img src="/assets/sssss.png" alt="Screenshot 2" class="h-full w-1/3 object-cover cursor-pointer hover:opacity-80 transition-opacity controller-img" />
+				<img src="/assets/controllemuimg.png" alt="Screenshot 3" class="h-full w-1/3 object-cover cursor-pointer hover:opacity-80 transition-opacity controller-img" />
+			</div>
+			<div class="text-white" style="font-family: Consolas, monospace; font-size: 16px; line-height: 24px;">
+				<p>i made this to play a game called skate known as skate4 when i didn't have a controller but this can also be used to get aim assist on keyboard and mouse as a form of exploiting</p>
+				<p class="mt-4">github: <a href="https://github.com/antidotxe/controllerEmulator" target="_blank" class="text-blue-400 hover:text-blue-300 underline">https://github.com/antidotxe/controllerEmulator</a></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="section relative z-10 border-2 border-gray-700/50 w-[70vw] h-[60vh] transition-all duration-700 ease-in-out overflow-hidden">
+		<div class="flex flex-col h-full p-8">
+			<h2 class="text-white text-3xl font-bold mb-6" style="font-family: Consolas, monospace;">Custom Snipping Tool</h2>
+			<div class="flex gap-4 mb-6 flex-1">
+				<img src="/assets/snipsnip.png" alt="Snipping Tool Screenshot 1" class="h-full w-1/2 object-cover cursor-pointer hover:opacity-80 transition-opacity snip-img" />
+				<img src="/assets/SNIPSNIPP2.png" alt="Snipping Tool Screenshot 2" class="h-full w-1/2 object-cover cursor-pointer hover:opacity-80 transition-opacity snip-img" />
+			</div>
+			<div class="text-white" style="font-family: Consolas, monospace; font-size: 16px; line-height: 24px;">
+				<p>i made this as a small project because i didn't like window's snippingtool like at all i dont really use this anymore but its a cool project i did :3</p>
+				<p class="mt-4">github: <a href="https://github.com/antidotxe/SnipingToolAltt" target="_blank" class="text-blue-400 hover:text-blue-300 underline">https://github.com/antidotxe/SnipingToolAltt</a></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="section relative z-10 border-2 border-gray-700/50 w-[70vw] h-[60vh] transition-all duration-700 ease-in-out">
+		<div class="flex items-center justify-center h-full gap-8 px-12">
+			<div class="flex-shrink-0">
+				<img src="/assets/cleranerrr.png" alt="Cleaner Tool" class="w-80 h-80 object-contain cursor-pointer hover:opacity-80 transition-opacity cleaner-img" />
+			</div>
+			<div class="text-white max-w-md" style="font-family: Consolas, monospace; font-size: 16px; line-height: 24px;">
+				<h2 class="text-3xl font-bold mb-4">Cleaner Tool</h2>
+				<p>this was made to clean logs/combos u get when freshly getting them they are messy to this purpose is to reformat and clean them to be in a checker format and clean :3333</p>
+				<p class="mt-4">github: <a href="https://github.com/antidotxe/LogCleaner" target="_blank" class="text-blue-400 hover:text-blue-300 underline">https://github.com/antidotxe/LogCleaner</a></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="section relative z-10 border-2 border-gray-700/50 w-[70vw] h-[60vh] transition-all duration-700 ease-in-out">
+		<div class="flex items-center justify-center h-full gap-8 px-12">
+			<div class="flex-shrink-0">
+				<img src="/assets/rlbx.png" alt="Roblox External" class="w-80 h-80 object-contain cursor-pointer hover:opacity-80 transition-opacity roblox-img" />
+			</div>
+			<div class="text-white max-w-md" style="font-family: Consolas, monospace; font-size: 16px; line-height: 24px;">
+				<h2 class="text-3xl font-bold mb-4">Roblox External</h2>
+				<p>a roblox external i was working on and still am kinda yea i made it for fun basically :3</p>
+				<p class="mt-4">github: soon...</p>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const silkImage = document.getElementById('silk-image');
+		const modal = document.getElementById('image-modal');
+		const modalImage = document.getElementById('modal-image');
+		const closeModal = document.getElementById('close-modal');
+		const controllerImages = document.querySelectorAll('.controller-img');
+		const snipImages = document.querySelectorAll('.snip-img');
+		const cleanerImages = document.querySelectorAll('.cleaner-img');
+		const robloxImages = document.querySelectorAll('.roblox-img');
+
+		silkImage?.addEventListener('click', () => {
+			if (modal && modalImage) {
+				modalImage.src = '/assets/silk.png';
+				modal.classList.remove('hidden');
+				modal.classList.add('flex');
+				setTimeout(() => {
+					modal.style.opacity = '1';
+					modalImage.style.transform = 'scale(1)';
+				}, 10);
+			}
+		});
+
+		controllerImages.forEach(img => {
+			img.addEventListener('click', () => {
+				if (modal && modalImage) {
+					modalImage.src = (img as HTMLImageElement).src;
+					modal.classList.remove('hidden');
+					modal.classList.add('flex');
+					setTimeout(() => {
+						modal.style.opacity = '1';
+						modalImage.style.transform = 'scale(1)';
+					}, 10);
+				}
+			});
+		});
+
+		snipImages.forEach(img => {
+			img.addEventListener('click', () => {
+				if (modal && modalImage) {
+					modalImage.src = (img as HTMLImageElement).src;
+					modal.classList.remove('hidden');
+					modal.classList.add('flex');
+					setTimeout(() => {
+						modal.style.opacity = '1';
+						modalImage.style.transform = 'scale(1)';
+					}, 10);
+				}
+			});
+		});
+
+		cleanerImages.forEach(img => {
+			img.addEventListener('click', () => {
+				if (modal && modalImage) {
+					modalImage.src = (img as HTMLImageElement).src;
+					modal.classList.remove('hidden');
+					modal.classList.add('flex');
+					setTimeout(() => {
+						modal.style.opacity = '1';
+						modalImage.style.transform = 'scale(1)';
+					}, 10);
+				}
+			});
+		});
+
+		robloxImages.forEach(img => {
+			img.addEventListener('click', () => {
+				if (modal && modalImage) {
+					modalImage.src = (img as HTMLImageElement).src;
+					modal.classList.remove('hidden');
+					modal.classList.add('flex');
+					setTimeout(() => {
+						modal.style.opacity = '1';
+						modalImage.style.transform = 'scale(1)';
+					}, 10);
+				}
+			});
+		});
+
+		const closeModalFunc = () => {
+			if (modal && modalImage) {
+				modal.style.opacity = '0';
+				modalImage.style.transform = 'scale(0.75)';
+				setTimeout(() => {
+					modal.classList.add('hidden');
+					modal.classList.remove('flex');
+				}, 300);
+			}
+		};
+
+		closeModal?.addEventListener('click', closeModalFunc);
+		modal?.addEventListener('click', (e) => {
+			if (e.target === modal) {
+				closeModalFunc();
+			}
+		});
+	</script>
+
+	<NavigationArrow />
 </Layout>
+
+<style>
+	.section {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
+	}
+</style>
+

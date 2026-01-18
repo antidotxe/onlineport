@@ -34,7 +34,6 @@
 			}
 		});
 
-		// Show/hide navigation arrows
 		if (prevBtn && nextBtn) {
 			prevBtn.style.display = currentSection === 0 ? 'none' : 'block';
 			nextBtn.style.display = currentSection === sections.length - 1 ? 'none' : 'block';
@@ -55,7 +54,6 @@
 		}
 	});
 
-	// Listen for section changes from project links
 	window.addEventListener('sectionChange', (e: Event) => {
 		const customEvent = e as CustomEvent;
 		currentSection = customEvent.detail.sectionIndex;

@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SnowCanvas from '../components/SnowCanvas.astro';
+---
+
+<Layout title="anti - blog">
+	<SnowCanvas />
+	
+	<div class="relative z-10 w-[90vw] md:w-[85vw] lg:w-[80vw] h-[75vh] md:h-[70vh] overflow-y-auto bg-black">
+		<div class="p-8 text-white" style="font-family: Consolas, monospace;">
+			<div class="mb-8">
+				<a href="/" class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors group">
+					<svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+					</svg>
+					<span>back to home</span>
+				</a>
+			</div>
+
+			<h1 class="text-4xl font-bold mb-8">blog / about me</h1>
+
+			<div class="space-y-6 text-sm leading-relaxed">
+				<section>
+					<h2 class="text-2xl font-bold mb-4 text-blue-400">who am i?</h2>
+					<p>hi im known as anti online but my real name is tom and i am a full stack developer / reverse engineer based in north wales. i graduated school with an A+ in computer science and am currently in employment at a local company and studying computer science in further education.</p>
+				</section>
+
+				<section>
+					<h2 class="text-2xl font-bold mb-4 text-blue-400">known languages</h2>
+					<p>C++, C, Rust, PHP, HTML, CSS, JavaScript, TypeScript, Java, Python, Assembly, Ruby, Haskell, Golang</p>
+				</section>
+
+				<section>
+					<h2 class="text-2xl font-bold mb-4 text-blue-400">interests</h2>
+					<p>rock climbing, i like cooking and most of all sleeping lol. i obviously like coding which is what i mostly do all day.</p>
+				</section>
+
+				<section>
+					<h2 class="text-2xl font-bold mb-4 text-blue-400">commissions</h2>
+					<p>for further commissions please dm me on discord @ <span class="text-blue-400">antidotxe</span> or email me @ <a href="mailto:tomlovesbdg@gmail.com" class="text-blue-400 hover:text-blue-300 underline">tomlovesbdg@gmail.com</a></p>
+					<p class="mt-2 text-gray-400">(please note i will not do free work or assistance of any kind) :3</p>
+				</section>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0.3);
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: 4px;
+	}
+
+	::-webkit-scrollbar-thumb:hover {
+		background: rgba(255, 255, 255, 0.3);
+	}
+</style>

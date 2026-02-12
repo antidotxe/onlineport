@@ -3,11 +3,250 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="anti - portfolio">
+  <canvas id="bg-webgl" class="pointer-events-none fixed inset-0 z-0 opacity-60"></canvas>
+
   <main class="relative z-10 min-h-screen flex items-center justify-center px-4 py-10">
-    <section class="w-full max-w-5xl min-h-[70vh] rounded-xl border border-white/15 bg-[#121212] shadow-2xl">
-      <div class="p-6 text-white/75" style="font-family: Consolas, monospace;">
-        <p>content area placeholder - we can fill this with sections next.</p>
+    <section class="w-full max-w-5xl min-h-[72vh] overflow-hidden rounded-2xl border border-white/15 bg-[#111111] shadow-[0_30px_90px_rgba(0,0,0,0.65)]">
+      <div class="flex items-center justify-end border-b border-white/10 px-5 py-3">
+        <div class="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/55">
+          <a href="#home" class="rounded-md border border-white/20 bg-white/10 px-3 py-1 hover:bg-white/15 transition-colors">Home</a>
+          <a href="/blog" class="rounded-md border border-white/10 px-3 py-1 hover:bg-white/10 transition-colors">Blog</a>
+        </div>
+      </div>
+
+      <div class="relative p-8 md:p-12 text-white" style="font-family: Consolas, monospace;">
+        <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_20%,rgba(255,255,255,0.06),transparent_45%)]"></div>
+
+        <div class="relative flex flex-col gap-10">
+          <div id="home" class="max-w-2xl scroll-mt-24">
+            <h1 class="mt-4 text-3xl md:text-5xl leading-tight">
+              hi, my name is <span class="text-white/90">tom</span>
+            </h1>
+            <p class="mt-5 max-w-2xl text-base md:text-lg text-white/70 leading-relaxed">
+              im a full stack developer from north wales. i build clean web experiences,
+              backend systems, and tools that solve real problems.
+            </p>
+
+            <div class="mt-8 flex flex-wrap items-center gap-4">
+              <a
+                href="https://github.com/antidotxe"
+                target="_blank"
+                rel="noreferrer"
+                class="inline-flex items-center gap-2 rounded-md border border-white/20 px-4 py-2 text-white/85 hover:bg-white/10 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true">
+                  <path d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.57.1.78-.25.78-.56v-2.14c-3.2.7-3.88-1.35-3.88-1.35-.53-1.32-1.28-1.67-1.28-1.67-1.04-.7.08-.69.08-.69 1.15.08 1.76 1.18 1.76 1.18 1.02 1.74 2.68 1.24 3.33.95.1-.74.4-1.24.72-1.52-2.56-.29-5.25-1.28-5.25-5.69 0-1.25.45-2.27 1.17-3.07-.12-.29-.5-1.45.11-3.01 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.14-1.17 3.14-1.17.61 1.56.23 2.72.11 3.01.73.8 1.17 1.82 1.17 3.07 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.79.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+                </svg>
+                <span>github</span>
+              </a>
+
+              <a
+                href="mailto:tomlovesbdg@gmail.com"
+                class="inline-flex items-center gap-2 rounded-md border border-white/20 px-4 py-2 text-white/85 hover:bg-white/10 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                  <path d="m3 7 9 6 9-6"></path>
+                </svg>
+                <span>email</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
+
+  <script type="module">
+    const canvas = document.getElementById('bg-webgl');
+    if (!(canvas instanceof HTMLCanvasElement)) {
+      throw new Error('Missing #bg-webgl canvas');
+    }
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+    const gl = canvas.getContext('webgl2', { alpha: true, antialias: true, premultipliedAlpha: false });
+    if (!gl) {
+      // If WebGL2 isn't available, just leave the canvas empty.
+      // (The content still looks fine without it.)
+      canvas.remove();
+      return;
+    }
+
+    const vert = `#version 300 es
+      precision highp float;
+      in vec2 a_pos;
+      in float a_seed;
+      uniform vec2 u_res;
+      uniform float u_time;
+      uniform vec2 u_mouse;
+      out float v_seed;
+
+      float hash(float n) { return fract(sin(n) * 43758.5453123); }
+
+      void main() {
+        v_seed = a_seed;
+
+        float t = u_time * 0.15;
+        vec2 p = a_pos;
+
+        // subtle drift
+        p += vec2(sin(t + a_seed * 10.0), cos(t * 1.3 + a_seed * 12.0)) * 0.02;
+
+        // mouse parallax (mouse in [-0.5..0.5] approx)
+        p += u_mouse * (0.07 + 0.04 * hash(a_seed * 19.7));
+
+        gl_Position = vec4(p, 0.0, 1.0);
+
+        float px = max(u_res.x, u_res.y);
+        float base = mix(1.5, 4.2, hash(a_seed * 3.1));
+        gl_PointSize = base * (px / 900.0);
+      }
+    `;
+
+    const frag = `#version 300 es
+      precision highp float;
+      in float v_seed;
+      uniform float u_time;
+      out vec4 outColor;
+
+      float hash(float n) { return fract(sin(n) * 43758.5453123); }
+
+      void main() {
+        vec2 uv = gl_PointCoord * 2.0 - 1.0;
+        float d = dot(uv, uv);
+        float alpha = smoothstep(1.0, 0.2, d);
+
+        float twinkle = 0.55 + 0.45 * sin(u_time * 2.2 + v_seed * 40.0);
+        float c = mix(0.55, 1.0, hash(v_seed * 7.7)) * twinkle;
+
+        outColor = vec4(vec3(c), alpha * 0.75);
+      }
+    `;
+
+    const compile = (type, source) => {
+      const shader = gl.createShader(type);
+      if (!shader) throw new Error('Unable to create shader');
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        const msg = gl.getShaderInfoLog(shader) ?? 'Shader compile failed';
+        gl.deleteShader(shader);
+        throw new Error(msg);
+      }
+      return shader;
+    };
+
+    const link = (vs, fs) => {
+      const program = gl.createProgram();
+      if (!program) throw new Error('Unable to create program');
+      gl.attachShader(program, vs);
+      gl.attachShader(program, fs);
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        const msg = gl.getProgramInfoLog(program) ?? 'Program link failed';
+        gl.deleteProgram(program);
+        throw new Error(msg);
+      }
+      return program;
+    };
+
+    const vs = compile(gl.VERTEX_SHADER, vert);
+    const fs = compile(gl.FRAGMENT_SHADER, frag);
+    const program = link(vs, fs);
+
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
+
+    const uRes = gl.getUniformLocation(program, 'u_res');
+    const uTime = gl.getUniformLocation(program, 'u_time');
+    const uMouse = gl.getUniformLocation(program, 'u_mouse');
+
+    const points = Math.floor(Math.min(1400, Math.max(650, window.innerWidth * 0.9)));
+    const pos = new Float32Array(points * 2);
+    const seed = new Float32Array(points);
+
+    for (let i = 0; i < points; i++) {
+      pos[i * 2 + 0] = (Math.random() * 2 - 1) * 1.05;
+      pos[i * 2 + 1] = (Math.random() * 2 - 1) * 1.05;
+      seed[i] = Math.random();
+    }
+
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+
+    const posBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, posBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, pos, gl.STATIC_DRAW);
+    const aPos = gl.getAttribLocation(program, 'a_pos');
+    gl.enableVertexAttribArray(aPos);
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+    const seedBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, seedBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, seed, gl.STATIC_DRAW);
+    const aSeed = gl.getAttribLocation(program, 'a_seed');
+    gl.enableVertexAttribArray(aSeed);
+    gl.vertexAttribPointer(aSeed, 1, gl.FLOAT, false, 0, 0);
+
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+
+    let mouse = { x: 0, y: 0 };
+    const onPointerMove = (e) => {
+      const nx = e.clientX / window.innerWidth - 0.5;
+      const ny = e.clientY / window.innerHeight - 0.5;
+      mouse = { x: nx, y: -ny };
+    };
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+
+    const setSize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(window.innerWidth * dpr);
+      const h = Math.floor(window.innerHeight * dpr);
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        gl.viewport(0, 0, w, h);
+      }
+    };
+
+    const onResize = () => setSize();
+    window.addEventListener('resize', onResize);
+    setSize();
+
+    let rafId = 0;
+    const start = performance.now();
+
+    const draw = (now) => {
+      const t = (now - start) / 1000;
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+      gl.useProgram(program);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uTime, t);
+      gl.uniform2f(uMouse, mouse.x, mouse.y);
+
+      gl.bindVertexArray(vao);
+      gl.drawArrays(gl.POINTS, 0, points);
+      gl.bindVertexArray(null);
+
+      rafId = window.requestAnimationFrame(draw);
+    };
+
+    if (!reduceMotion) rafId = window.requestAnimationFrame(draw);
+
+    window.addEventListener('pagehide', () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('pointermove', onPointerMove);
+      gl.deleteBuffer(posBuf);
+      gl.deleteBuffer(seedBuf);
+      gl.deleteVertexArray(vao);
+      gl.deleteProgram(program);
+    });
+  </script>
 </Layout>
